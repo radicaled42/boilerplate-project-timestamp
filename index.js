@@ -20,21 +20,33 @@ app.get("/", function (req, res) {
 
 // your first API endpoint...
 app.get("/api/:date", function (req, res) {
-  // res.json({greeting: 'hello API'});
   const inputDate = req.params.date;
-  if (inputDate > 0) {
-    // "+047950-05-31T00:00:00.000Z"
-    // "Fri, 25 Dec 2015 00:00:00 GMT"
+
+  console.log(new Date(inputDate).toString());
+
+  if (!isNaN(inputDate)) {
+    console.log(inputDate);
     const standardDate = new Date(+inputDate).toUTCString();
-    res.json({ unix: inputDate, utc: standardDate });
-  } else if (
-    new Date(inputDate) !== "Invalid Date" &&
-    !isNaN(new Date(inputDate))
-  ) {
+    res.json({ unix: +inputDate, utc: standardDate });
+  } else if (new Date(inputDate).toString() === "Invalid Date") {
+    res.json({ error: "Invalid Date" });
+  } else {
     const unixDate = Math.floor(new Date(inputDate).getTime());
     const standardDate = new Date(inputDate).toUTCString();
     res.json({ unix: unixDate, utc: standardDate });
   }
+
+  // if (inputDate > 0) {
+  //   const standardDate = new Date(+inputDate).toUTCString();
+  //   res.json({ unix: inputDate, utc: standardDate });
+  // } else if (
+  //   new Date(inputDate) !== "Invalid Date" &&
+  //   !isNaN(new Date(inputDate))
+  // ) {
+  //   const unixDate = Math.floor(new Date(inputDate).getTime());
+  //   const standardDate = new Date(inputDate).toUTCString();
+  //   res.json({ unix: unixDate, utc: standardDate });
+  // }
 });
 
 // listen for requests :)
